@@ -5,16 +5,16 @@ import authRoutes from "./routes/authRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import streakRoutes from "./routes/streakRoutes.js";
 import collabRoutes from "./routes/collabRoutes.js";
+import userRoutes from "./routes/userRoutes.js"; // new import
 import errorHandler from "./middlewares/errorHandler.js";
 
 dotenv.config();
 
 const app = express();
 
-// CORS configuration: Allow only your frontend origin and credentials (cookies, auth headers)
 app.use(cors({
-  origin: "http://localhost:3000",  // your frontend URL
-  credentials: true,                // enable cookies/auth headers
+  origin: "http://localhost:3000",
+  credentials: true,
 }));
 
 app.use(express.json());
@@ -25,6 +25,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/streak", streakRoutes);
 app.use("/api/collabs", collabRoutes);
+app.use("/api/users", userRoutes);   // new user routes
 
 // Home route
 app.get("/", (req, res) => {

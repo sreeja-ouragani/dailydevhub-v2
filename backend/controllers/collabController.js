@@ -54,3 +54,35 @@ export const respondCollabRequest = async (req, res, next) => {
     next(error);
   }
 };
+
+// ✅ NEW: Get sent collaboration requests
+export const getSentCollabs = async (req, res, next) => {
+  try {
+    const requests = await CollabRequest.find({ fromUser: req.user.id })
+      .populate("toUser", "username email")
+      .sort({ createdAt: -1 });
+    res.json(requests);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ✅ NEW: Get accepted (ongoing) collaborations
+export const getOngoingCollabs = async (req, res, next) => {
+  try {
+    const requests = await CollabRequest.find({
+      $or: [
+        { fromUser: req.user.id },
+        { toUser: req.user.id }
+      ],
+      status: "accepted"
+    })
+      .populate("fromUser", "username email")
+      .populate("toUser", "username email")
+      .sort({ updatedAt: -1 });
+
+    res.json(requests);
+  } catch (error) {
+    next(error);
+  }
+};

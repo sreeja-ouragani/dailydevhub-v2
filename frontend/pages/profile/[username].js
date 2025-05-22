@@ -1,51 +1,43 @@
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 export default function Profile() {
-  // Removed useRouter as it's a Next.js specific hook and causing the compilation error.
-  // We'll simulate the username for demonstration purposes.
-  // In a real non-Next.js app, this 'username' might come from props, context, or a different routing solution.
-  const [username, setUsername] = useState('johndoe'); // Hardcoded a default username for compilation.
-  // State to hold the profile data
+  const router = useRouter()
+  const { username } = router.query
+
   const [profile, setProfile] = useState(null)
-  // State to manage the loading status
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // The router.isReady check is removed as useRouter is no longer used.
-    // The fetchProfile function will now run directly when the component mounts
-    // or if the 'username' state (if it were dynamic) changes.
+    if (!router.isReady || !username) return
 
     async function fetchProfile() {
-      setLoading(true) // Set loading to true while fetching
+      setLoading(true)
       try {
-        // Replace with actual API call to fetch user profile data
-        // For now, using mock data based on the hardcoded 'username'
+        // Replace this with actual API fetch for profile
         const data = {
-          username: username, // Use the username state
-          name: 'John Doe', // Example name
-          bio: 'Passionate developer and collaborator.', // Example bio
-          postsCount: 5, // Example posts count
-          collabCount: 2, // Example collaborations count
-          streak: 7, // Added a mock streak value
+          username,
+          name: 'John Doe',
+          bio: 'Passionate developer and collaborator.',
+          postsCount: 5,
+          collabCount: 2,
+          streak: 7,
         }
-        setProfile(data) // Set the fetched profile data
+        setProfile(data)
       } catch (err) {
-        // Log any errors and set profile to null if fetching fails
-        console.error("Failed to fetch profile:", err);
+        console.error("Failed to fetch profile:", err)
         setProfile(null)
       }
-      setLoading(false) // Set loading to false after fetching (success or failure)
+      setLoading(false)
     }
 
-    fetchProfile() // Call the fetch function
-  }, [username]) // Depend on username. Since it's hardcoded, this effect runs once on mount.
+    fetchProfile()
+  }, [router.isReady, username])
 
-  // Display a loading message while data is being fetched
   if (loading) {
     return <div className="max-w-xl mx-auto p-8 text-center text-gray-600">Loading profile...</div>
   }
 
-  // Display a "not found" message if profile data is null after loading
   if (!profile) {
     return <div className="max-w-xl mx-auto p-8 text-center text-red-500">Profile not found.</div>
   }
@@ -57,19 +49,16 @@ export default function Profile() {
       <p className="text-gray-600 mb-6">{profile.bio}</p>
 
       <div className="flex justify-between text-center text-gray-600 font-semibold border-t border-gray-200 pt-4">
-        {/* Display Posts Count */}
         <div>
           <p className="text-2xl text-blue-600">{profile.postsCount}</p>
           <p>Posts</p>
         </div>
-        {/* Display Collaborations Count */}
         <div>
           <p className="text-2xl text-blue-600">{profile.collabCount}</p>
           <p>Collaborations</p>
         </div>
-        {/* Display View Streak */}
         <div>
-          <p className="text-2xl text-blue-600">{profile.streak} 🔥</p> {/* Added streak with an emoji */}
+          <p className="text-2xl text-blue-600">{profile.streak} 🔥</p>
           <p>Streak</p>
         </div>
       </div>
