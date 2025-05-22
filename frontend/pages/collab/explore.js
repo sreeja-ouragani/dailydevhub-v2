@@ -2,30 +2,58 @@ import DashboardLayout from '../../components/DashboardLayout'
 import { useState, useEffect } from 'react'
 
 export default function ExploreCollab() {
+  const [user, setUser] = useState(null)
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [searching, setSearching] = useState(false)
 
+  // 1. Get current user from localStorage
   useEffect(() => {
+    const storedUser = localStorage.getItem('user')
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
+    }
+  }, [])
+
+  // 2. Fetch real posts from API and exclude current user's posts
+  useEffect(() => {
+    if (!user) return
+
     async function fetchTasks() {
       setLoading(true)
       try {
-        // Simulated tasks, replace with real API call if needed
-        const data = [
-          { id: 1, title: 'Build a landing page', description: 'Design and code a modern landing page', owner: 'alice' },
-          { id: 2, title: 'API Integration', description: 'Help integrate third-party APIs', owner: 'bob' },
-        ]
-        setTasks(data)
+        const res = await fetch('http://localhost:5000/api/posts', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        })
+
+        if (!res.ok) throw new Error('Failed to fetch posts')
+
+        const data = await res.json()
+        const othersPosts = data.filter(
+          (post) => post.user && post.user._id !== user.id
+        )
+
+        const mappedTasks = othersPosts.map((post) => ({
+          id: post._id,
+          title: post.content.slice(0, 40) || 'Untitled',
+          description: post.content,
+          owner: post.user.username,
+        }))
+
+        setTasks(mappedTasks)
       } catch (err) {
+        console.error(err)
         setTasks([])
       }
       setLoading(false)
     }
 
     fetchTasks()
-  }, [])
+  }, [user])
 
   const handleSearch = async () => {
     if (!query.trim()) return
@@ -107,7 +135,7 @@ export default function ExploreCollab() {
 
 function UserCard({ user }) {
   const [desc, setDesc] = useState('')
-  const [projectRole, setProjectRole] = useState('Frontend') // default role
+  const [projectRole, setProjectRole] = useState('Frontend')
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
 
@@ -116,15 +144,15 @@ function UserCard({ user }) {
 
     setSending(true)
     try {
-      const res = await fetch('http://localhost:5000/api/collabs/', { // <-- corrected endpoint here
+      const res = await fetch('http://localhost:5000/api/collabs/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({
-          toUser: user._id,         // matches backend's expected field
-          projectRole,              // selected role from dropdown
+          toUser: user._id,
+          projectRole,
           message: desc,
         }),
       })
@@ -133,6 +161,7 @@ function UserCard({ user }) {
         const errorData = await res.json()
         throw new Error(errorData.message || 'Request failed')
       }
+
       setSent(true)
       alert('✅ Collaboration request sent!')
     } catch (err) {
