@@ -76,26 +76,78 @@ export default function Signup() {
 
           {/* Username */}
           <div className="relative">
-            <input type="text" name="username" id="username" value={formData.username} onChange={handleChange} placeholder=" " className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-2 pt-4 text-gray-900 focus:outline-none focus:ring-0 ${errors.username ? 'border-red-500' : 'border-gray-300'} focus:border-blue-600`} />
-            <label htmlFor="username" className="absolute left-0 top-3 text-gray-500 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:text-sm peer-focus:text-blue-600">Username</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder=" "
+              className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-1 pt-6 text-gray-900 focus:outline-none focus:ring-0 ${errors.username ? 'border-red-500' : 'border-gray-300'} focus:border-blue-600`}
+              autoComplete="username"
+            />
+            <label
+              htmlFor="username"
+              className="absolute left-0 top-2 text-gray-500 text-sm transition-all
+                peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
+                peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-600"
+            >
+              Username
+            </label>
             {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
           </div>
 
           {/* Email */}
           <div className="relative">
-            <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} placeholder=" " className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-2 pt-4 text-gray-900 focus:outline-none focus:ring-0 ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:border-blue-600`} />
-            <label htmlFor="email" className="absolute left-0 top-3 text-gray-500 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:text-sm peer-focus:text-blue-600">Email address</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder=" "
+              className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-1 pt-6 text-gray-900 focus:outline-none focus:ring-0 ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:border-blue-600`}
+              autoComplete="email"
+            />
+            <label
+              htmlFor="email"
+              className="absolute left-0 top-2 text-gray-500 text-sm transition-all
+                peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
+                peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-600"
+            >
+              Email address
+            </label>
             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
           </div>
 
           {/* Password */}
           <div className="relative">
-            <input type="password" name="password" id="password" value={formData.password} onChange={handleChange} placeholder=" " className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-2 pt-4 text-gray-900 focus:outline-none focus:ring-0 ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:border-blue-600`} />
-            <label htmlFor="password" className="absolute left-0 top-3 text-gray-500 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:text-sm peer-focus:text-blue-600">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder=" "
+              className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-1 pt-6 text-gray-900 focus:outline-none focus:ring-0 ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:border-blue-600`}
+              autoComplete="new-password"
+            />
+            <label
+              htmlFor="password"
+              className="absolute left-0 top-2 text-gray-500 text-sm transition-all
+                peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
+                peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-600"
+            >
+              Password
+            </label>
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
           </div>
 
-          <button type="submit" disabled={loading} className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-700 text-white font-bold rounded-md hover:from-purple-700 hover:to-blue-600 transition">
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-700 text-white font-bold rounded-md hover:from-purple-700 hover:to-blue-600 transition"
+          >
             {loading ? 'Creating Account...' : 'Sign Up'}
           </button>
 
