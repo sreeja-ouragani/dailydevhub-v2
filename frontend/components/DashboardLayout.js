@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }) {
     { label: '📝 Create Post', href: '/create-post' },
     { label: '🚀 Explore Collab', href: '/collab/explore' },
     { label: '📨 Collab Requests', href: '/collab/requests' },
-    { label: '💡 AI Project Idea Generator', href: '/ai/project-ideas' },
+    { label: '🤖 DevBot Chat', href: '/chat' },
     // { label: '👤 Profile', href: user ? `/profile/${user.username}` : '/profile' }, ← REMOVED
   ]
 
