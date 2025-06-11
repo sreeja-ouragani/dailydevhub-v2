@@ -1,0 +1,17 @@
+{
+  "name": "ai",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "testAI.js",
+  "scripts": {
+    "start": "node testAI.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^16.5.0"
+  }
+}
