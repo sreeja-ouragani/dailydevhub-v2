@@ -9,7 +9,6 @@ export default function ExploreCollab() {
   const [searchResults, setSearchResults] = useState([])
   const [searching, setSearching] = useState(false)
 
-  // 1. Get current user from localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
     if (storedUser) {
@@ -17,7 +16,6 @@ export default function ExploreCollab() {
     }
   }, [])
 
-  // 2. Fetch real posts from API and exclude current user's posts
   useEffect(() => {
     if (!user) return
 
@@ -78,8 +76,10 @@ export default function ExploreCollab() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-4xl mx-auto p-4 sm:p-8 bg-white rounded-xl shadow-md">
-        <h1 className="text-3xl font-bold text-blue-700 mb-6 text-center">🚀 Explore Collaboration Tasks</h1>
+      <div className="max-w-4xl mx-auto p-4 sm:p-8 bg-white rounded-xl shadow-xl transition-all duration-500">
+        <h1 className="text-3xl font-extrabold text-[#7C3AED] mb-6 text-center animate-pulse">
+          🚀 Explore Collaboration Tasks
+        </h1>
 
         {/* Search Bar */}
         <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center">
@@ -88,11 +88,11 @@ export default function ExploreCollab() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search users by name or email..."
-            className="w-full sm:w-2/3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
+            className="w-full sm:w-2/3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#7C3AED] text-black"
           />
           <button
             onClick={handleSearch}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="px-4 py-2 bg-[#7C3AED] text-white rounded-md hover:bg-[#6B21A8] transition font-semibold shadow"
           >
             Search
           </button>
@@ -100,7 +100,7 @@ export default function ExploreCollab() {
 
         {/* Search Results */}
         {searching ? (
-          <p className="text-center text-gray-500 mb-6">Searching...</p>
+          <p className="text-center text-gray-500 mb-6 animate-pulse">Searching...</p>
         ) : searchResults.length > 0 && (
           <div className="mb-8">
             <h2 className="text-xl font-semibold mb-2 text-gray-800">🔍 User Results</h2>
@@ -114,16 +114,21 @@ export default function ExploreCollab() {
 
         {/* Task Section */}
         {loading ? (
-          <p className="text-center text-gray-600">Loading tasks...</p>
+          <p className="text-center text-gray-600 animate-pulse">Loading tasks...</p>
         ) : tasks.length === 0 ? (
           <p className="text-center text-gray-600">No collaboration tasks found.</p>
         ) : (
           <ul className="space-y-5">
             {tasks.map(({ id, title, description, owner }) => (
-              <li key={id} className="border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
-                <h2 className="text-xl font-semibold text-blue-600">{title}</h2>
+              <li
+                key={id}
+                className="border border-gray-200 rounded-lg p-5 hover:shadow-xl transition-shadow duration-300 bg-gray-50"
+              >
+                <h2 className="text-xl font-semibold text-[#7C3AED]">{title}</h2>
                 <p className="text-gray-700 mt-1">{description}</p>
-                <p className="mt-3 text-sm text-gray-500">Posted by <strong>{owner}</strong></p>
+                <p className="mt-3 text-sm text-gray-500">
+                  Posted by <strong>{owner}</strong>
+                </p>
               </li>
             ))}
           </ul>
@@ -172,37 +177,39 @@ function UserCard({ user }) {
   }
 
   return (
-    <li className="border p-4 rounded-lg bg-gray-50 shadow-sm">
-      <div className="flex justify-between items-start">
+    <li className="border p-4 rounded-xl bg-[#F5F3FF] shadow hover:shadow-md transition">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div>
-          <p className="text-blue-700 font-semibold">{user.username}</p>
+          <p className="text-[#7C3AED] font-semibold">{user.username}</p>
           <p className="text-sm text-gray-500">{user.email}</p>
         </div>
 
-        <select
-          value={projectRole}
-          onChange={(e) => setProjectRole(e.target.value)}
-          disabled={sending || sent}
-          className="mr-3 px-2 py-1 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-400"
-        >
-          <option value="Frontend">Frontend</option>
-          <option value="Backend">Backend</option>
-          <option value="Fullstack">Fullstack</option>
-          <option value="AI/ML">AI/ML</option>
-          <option value="DevOps">DevOps</option>
-        </select>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mt-2 sm:mt-0">
+          <select
+            value={projectRole}
+            onChange={(e) => setProjectRole(e.target.value)}
+            disabled={sending || sent}
+            className="px-2 py-1 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+          >
+            <option value="Frontend">Frontend</option>
+            <option value="Backend">Backend</option>
+            <option value="Fullstack">Fullstack</option>
+            <option value="AI/ML">AI/ML</option>
+            <option value="DevOps">DevOps</option>
+          </select>
 
-        <button
-          onClick={sendRequest}
-          disabled={sending || sent}
-          className={`px-3 py-1 text-sm rounded-md ${
-            sent
-              ? 'bg-green-500 text-white cursor-default'
-              : 'bg-blue-600 hover:bg-blue-700 text-white'
-          }`}
-        >
-          {sent ? 'Request Sent' : sending ? 'Sending...' : 'Send Request'}
-        </button>
+          <button
+            onClick={sendRequest}
+            disabled={sending || sent}
+            className={`px-3 py-1 text-sm rounded-md transition font-medium ${
+              sent
+                ? 'bg-green-500 text-white cursor-default'
+                : 'bg-[#7C3AED] hover:bg-[#6B21A8] text-white'
+            }`}
+          >
+            {sent ? 'Request Sent' : sending ? 'Sending...' : 'Send Request'}
+          </button>
+        </div>
       </div>
 
       <textarea
@@ -210,7 +217,7 @@ function UserCard({ user }) {
         onChange={(e) => setDesc(e.target.value)}
         placeholder="Write a short note..."
         rows={2}
-        className="w-full mt-3 p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 text-black"
+        className="w-full mt-3 p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-[#7C3AED] text-black"
         disabled={sent}
       />
     </li>

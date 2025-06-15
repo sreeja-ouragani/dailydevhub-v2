@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 export default function CreatePost() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [file, setFile] = useState(null) // for image/video
+  const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [token, setToken] = useState(null)
@@ -63,44 +63,50 @@ export default function CreatePost() {
   }
 
   return (
-    <div className="max-w-xl w-full mx-auto bg-white rounded-2xl shadow-lg p-6 sm:p-8 mt-6 mb-10">
-      <h1 className="text-2xl sm:text-3xl font-bold text-blue-700 mb-6 text-center">
+    <div className="max-w-xl w-full mx-auto bg-white rounded-2xl shadow-lg p-5 sm:p-8 mt-6 mb-12">
+      <h1 className="text-xl sm:text-3xl font-extrabold text-center text-[#7C3AED] mb-6">
         📝 Create a New Post
       </h1>
 
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-5" encType="multipart/form-data">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4" encType="multipart/form-data">
         <div className="flex flex-col">
-          <label className="font-semibold text-gray-800 mb-1">Title</label>
+          <label className="text-sm sm:text-base font-semibold text-[#1F2937] mb-1">
+            Title
+          </label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
+            className="rounded-lg border border-[#DDD6FE] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#7C3AED] text-[#1F2937] bg-white"
             placeholder="Enter post title"
           />
         </div>
 
         <div className="flex flex-col">
-          <label className="font-semibold text-gray-800 mb-1">Description</label>
+          <label className="text-sm sm:text-base font-semibold text-[#1F2937] mb-1">
+            Description
+          </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={5}
-            className="rounded-lg border border-gray-300 px-4 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
+            className="rounded-lg border border-[#DDD6FE] px-4 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-[#7C3AED] text-[#1F2937] bg-white"
             placeholder="Write your post content here..."
           />
         </div>
 
         <div className="flex flex-col">
-          <label className="font-semibold text-gray-800 mb-1">Upload Image/Video (optional)</label>
+          <label className="text-sm sm:text-base font-semibold text-[#1F2937] mb-1">
+            Upload Image/Video (optional)
+          </label>
           <input
             type="file"
             accept="image/*,video/*"
             onChange={(e) => setFile(e.target.files[0])}
-            className="focus:outline-none"
+            className="focus:outline-none text-[#1F2937]"
           />
           {file && (
-            <p className="mt-1 text-sm text-gray-600">
+            <p className="mt-1 text-sm text-[#7C3AED]">
               Selected file: <span className="font-medium">{file.name}</span>
             </p>
           )}
@@ -109,7 +115,7 @@ export default function CreatePost() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+          className="w-full bg-[#7C3AED] hover:bg-[#6B21A8] transition text-white font-semibold py-3 rounded-lg focus:outline-none disabled:opacity-50"
         >
           {loading ? 'Posting...' : 'Create Post'}
         </button>
