@@ -2,16 +2,18 @@
   "name": "ai",
   "version": "1.0.0",
   "type": "module",
-  "main": "testAI.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node testAI.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Gemini AI Node.js Backend",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "dotenv": "^16.5.0"
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2"
   }
 }
