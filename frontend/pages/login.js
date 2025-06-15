@@ -1,3 +1,4 @@
+// pages/login.js
 import Link from 'next/link'
 import { useState } from 'react'
 import api from '../utils/api'
@@ -16,14 +17,11 @@ export default function Login() {
       const token = res.data?.token
       const user = res.data?.user
 
-      // Store token and user in localStorage
       localStorage.setItem('token', token)
       localStorage.setItem('user', JSON.stringify(user))
 
       alert('Logged in successfully! ✅')
-
-      // Redirect to dashboard after login
-      window.location.href = '/dashboard';
+      window.location.href = '/dashboard'
     } catch (err) {
       console.error(err)
       const msg = err.response?.data?.message || 'Login failed. Please try again.'
@@ -34,19 +32,19 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-tr from-blue-50 to-white items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 sm:p-10">
-        <h1 className="text-4xl font-serif font-bold text-blue-700 text-center mb-8 tracking-tight">
+    <div className="flex min-h-screen bg-gradient-to-tr from-white to-[#DDD6FE] items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 sm:p-10 animate-fade-in-up">
+        <h1 className="text-4xl font-serif font-bold text-[#7C3AED] text-center mb-6 sm:mb-8 tracking-tight">
           DailyDevHub
         </h1>
 
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-8 text-center">
+        <h2 className="text-lg sm:text-2xl font-semibold text-[#1F2937] mb-8 text-center">
           Welcome Back! Login to Your Account
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-gray-700 font-medium mb-1">
+            <label htmlFor="email" className="block text-[#1F2937] font-medium mb-1">
               Email Address
             </label>
             <input
@@ -56,12 +54,12 @@ export default function Login() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-300 transition text-gray-900"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-4 focus:ring-[#DDD6FE] transition text-[#1F2937] bg-[#F9F9FF]"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-gray-700 font-medium mb-1">
+            <label htmlFor="password" className="block text-[#1F2937] font-medium mb-1">
               Password
             </label>
             <input
@@ -71,26 +69,44 @@ export default function Login() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-300 transition text-gray-900"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-4 focus:ring-[#DDD6FE] transition text-[#1F2937] bg-[#F9F9FF]"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition"
+            className="w-full bg-[#7C3AED] hover:bg-[#6B21A8] text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-gray-600">
+        <p className="mt-6 text-center text-[#1F2937] text-sm">
           New here?{' '}
-          <Link href="/signup" className="text-blue-600 font-semibold hover:underline">
+          <Link href="/signup" className="text-[#7C3AED] font-semibold hover:underline">
             Create an account
           </Link>
         </p>
       </div>
+
+      {/* Animation styles */}
+      <style jsx>{`
+        .animate-fade-in-up {
+          animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   )
 }

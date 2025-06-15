@@ -39,7 +39,6 @@ export default function Signup() {
     try {
       const res = await api.post('/auth/signup', formData)
       alert('Account created! 🎉')
-      // Optional: redirect to login page
     } catch (err) {
       console.error(err)
       const msg = err.response?.data?.message || 'Signup failed. Try again.'
@@ -52,11 +51,11 @@ export default function Signup() {
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left Side - Branding */}
-      <div className="md:w-1/2 bg-gradient-to-tr from-blue-600 to-purple-700 text-white flex flex-col justify-center items-center p-10 md:p-16">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-wide text-center">
+      <div className="md:w-1/2 bg-gradient-to-tr from-[#7C3AED] to-[#6B21A8] text-white flex flex-col justify-center items-center p-10 md:p-16">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-wide text-center animate-fade-in">
           DailyDevHub
         </h1>
-        <p className="text-base md:text-lg max-w-md text-center opacity-90 leading-relaxed">
+        <p className="text-base md:text-lg max-w-md text-center opacity-90 leading-relaxed animate-fade-in-delay">
           Join our community of passionate developers. Share your progress, collaborate on projects, and keep your developer streak alive!
         </p>
         <div className="mt-10 md:mt-12 text-center opacity-80">
@@ -68,9 +67,9 @@ export default function Signup() {
       </div>
 
       {/* Right Side - Signup Form */}
-      <div className="md:w-1/2 bg-white flex items-center justify-center p-8 md:p-12">
-        <form onSubmit={handleSubmit} className="w-full max-w-md space-y-8" noValidate>
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-6 text-center">
+      <div className="md:w-1/2 bg-white flex items-center justify-center p-6 sm:p-10 md:p-12">
+        <form onSubmit={handleSubmit} className="w-full max-w-md space-y-8 animate-slide-up" noValidate>
+          <h2 className="text-2xl md:text-3xl font-semibold text-[#1F2937] mb-6 text-center">
             Create your account
           </h2>
 
@@ -83,14 +82,14 @@ export default function Signup() {
               value={formData.username}
               onChange={handleChange}
               placeholder=" "
-              className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-1 pt-6 text-gray-900 focus:outline-none focus:ring-0 ${errors.username ? 'border-red-500' : 'border-gray-300'} focus:border-blue-600`}
+              className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-1 pt-6 text-[#1F2937] focus:outline-none focus:ring-0 ${errors.username ? 'border-red-500' : 'border-gray-300'} focus:border-[#7C3AED]`}
               autoComplete="username"
             />
             <label
               htmlFor="username"
               className="absolute left-0 top-2 text-gray-500 text-sm transition-all
                 peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
-                peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-600"
+                peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#7C3AED]"
             >
               Username
             </label>
@@ -106,14 +105,14 @@ export default function Signup() {
               value={formData.email}
               onChange={handleChange}
               placeholder=" "
-              className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-1 pt-6 text-gray-900 focus:outline-none focus:ring-0 ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:border-blue-600`}
+              className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-1 pt-6 text-[#1F2937] focus:outline-none focus:ring-0 ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:border-[#7C3AED]`}
               autoComplete="email"
             />
             <label
               htmlFor="email"
               className="absolute left-0 top-2 text-gray-500 text-sm transition-all
                 peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
-                peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-600"
+                peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#7C3AED]"
             >
               Email address
             </label>
@@ -129,14 +128,14 @@ export default function Signup() {
               value={formData.password}
               onChange={handleChange}
               placeholder=" "
-              className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-1 pt-6 text-gray-900 focus:outline-none focus:ring-0 ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:border-blue-600`}
+              className={`peer block w-full appearance-none border-b-2 bg-transparent px-0 pb-1 pt-6 text-[#1F2937] focus:outline-none focus:ring-0 ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:border-[#7C3AED]`}
               autoComplete="new-password"
             />
             <label
               htmlFor="password"
               className="absolute left-0 top-2 text-gray-500 text-sm transition-all
                 peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
-                peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-600"
+                peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#7C3AED]"
             >
               Password
             </label>
@@ -146,14 +145,14 @@ export default function Signup() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-700 text-white font-bold rounded-md hover:from-purple-700 hover:to-blue-600 transition"
+            className="w-full py-3 bg-[#7C3AED] text-white font-bold rounded-md hover:bg-[#6B21A8] transition shadow-lg"
           >
             {loading ? 'Creating Account...' : 'Sign Up'}
           </button>
 
           <p className="text-center text-gray-600">
             Already have an account?{' '}
-            <Link href="/login" className="text-blue-600 hover:underline">Login here</Link>
+            <Link href="/login" className="text-[#7C3AED] hover:underline">Login here</Link>
           </p>
         </form>
       </div>
