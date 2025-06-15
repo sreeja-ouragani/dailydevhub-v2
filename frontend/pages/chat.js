@@ -4,8 +4,8 @@ import aiApi from '../utils/aiApi'
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([])
-  const [input,    setInput]    = useState('')
-  const endRef                  = useRef(null)
+  const [input, setInput] = useState('')
+  const endRef = useRef(null)
 
   const faqs = [
     'Suggest a unique JavaScript project idea for my resume',
@@ -15,7 +15,6 @@ const ChatPage = () => {
     'Suggest a useful hackathon project',
   ]
 
-  /* ---------------------------- AI Call Helper --------------------------- */
   const sendToAI = async (msg) => {
     try {
       const currentUser = JSON.parse(localStorage.getItem('user'))
@@ -37,7 +36,6 @@ const ChatPage = () => {
     }
   }
 
-  /* ------------------------------ Handlers ------------------------------- */
   const pushUser = (text) => {
     setMessages(p => [...p, { role: 'user', content: text }, { role: 'bot', content: '⏳ Generating…' }])
     sendToAI(text)
@@ -55,7 +53,6 @@ const ChatPage = () => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  /* ---------------------------------------------------------------------- */
   return (
     <div className="flex flex-col max-w-5xl mx-auto h-[90vh] sm:h-[85vh] bg-white rounded-xl overflow-hidden shadow-2xl shadow-purple-300 border border-gray-200">
       {/* Header */}
