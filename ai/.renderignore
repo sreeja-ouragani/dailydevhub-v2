@@ -1,5 +1,25 @@
-app.py
-*.py
-*.pyc
+# ✅ Only ignore specific files INSIDE the ai/ folder, not the folder itself
+ai/gemini.js
+ai/chatController.js
+ai/chatRoutes.js
+ai/gptService.js
+ai/flaskBridge.js
+ai/server.js
+ai/terminalChat.js
+ai/testAI.js
+
+# ✅ Ignore full Node folders
+config/
+controllers/
+routes/
+utils/
+
+# ✅ Ignore Node metadata
+package.json
+package-lock.json
+
+# ✅ Optional: Python cache and virtual env
 __pycache__/
+*.pyc
 venv/
+
