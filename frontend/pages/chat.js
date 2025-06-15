@@ -1,4 +1,3 @@
-// frontend/pages/chat.js
 import { useEffect, useRef, useState } from 'react'
 import DashboardLayout from '../components/DashboardLayout'
 import aiApi from '../utils/aiApi'
@@ -19,7 +18,19 @@ const ChatPage = () => {
   /* ---------------------------- AI Call Helper --------------------------- */
   const sendToAI = async (msg) => {
     try {
-      const { data } = await aiApi.post('/api/ai/chat', { message: msg })
+      const currentUser = JSON.parse(localStorage.getItem('user'))
+      const username = currentUser?.username
+
+      if (!username) {
+        setMessages(prev => [...prev.slice(0, -1), { role: 'bot', content: '⚠️ Please log in to use the chatbot.' }])
+        return
+      }
+
+      const { data } = await aiApi.post('/api/ai/chat', {
+        message: msg,
+        username: username
+      })
+
       setMessages(prev => [...prev.slice(0, -1), { role: 'bot', content: data.reply || '⚠️ No reply.' }])
     } catch {
       setMessages(prev => [...prev.slice(0, -1), { role: 'bot', content: '❌ Error contacting AI.' }])
@@ -31,9 +42,18 @@ const ChatPage = () => {
     setMessages(p => [...p, { role: 'user', content: text }, { role: 'bot', content: '⏳ Generating…' }])
     sendToAI(text)
   }
-  const onSend = (e) => { e.preventDefault(); if (input.trim()) { pushUser(input); setInput('') } }
 
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages])
+  const onSend = (e) => {
+    e.preventDefault()
+    if (input.trim()) {
+      pushUser(input)
+      setInput('')
+    }
+  }
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
   /* ---------------------------------------------------------------------- */
   return (
