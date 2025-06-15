@@ -1,3 +1,4 @@
+
 import { getGPTResponse } from './utils/gptService.js'
 
 // Get the prompt from CLI argument

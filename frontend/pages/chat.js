@@ -1,11 +1,12 @@
+// frontend/pages/chat.js
 import { useEffect, useRef, useState } from 'react'
 import DashboardLayout from '../components/DashboardLayout'
-import aiApi from '../utils/aiApi' // ✅ Importing aiApi
+import aiApi from '../utils/aiApi'
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([])
-  const [input, setInput] = useState('')
-  const messagesEndRef = useRef(null)
+  const [input,    setInput]    = useState('')
+  const endRef                  = useRef(null)
 
   const faqs = [
     'Suggest a unique JavaScript project idea for my resume',
@@ -15,37 +16,29 @@ const ChatPage = () => {
     'Suggest a useful hackathon project',
   ]
 
-  // ✅ Function to call AI backend
-  const sendMessageToAI = async (text) => {
+  /* ---------------------------- AI Call Helper --------------------------- */
+  const sendToAI = async (msg) => {
     try {
-      const res = await aiApi.post('/api/ai/chat', { message: text }) // Hitting your AI backend
-      const reply = res.data?.reply || '⚠️ No response from AI.'
-      setMessages((prev) => [...prev.slice(0, -1), { role: 'bot', content: reply }])
-    } catch (err) {
-      setMessages((prev) => [...prev.slice(0, -1), { role: 'bot', content: '❌ Error connecting to AI server.' }])
+      const { data } = await aiApi.post('/api/ai/chat', { message: msg })
+      setMessages(prev => [...prev.slice(0, -1), { role: 'bot', content: data.reply || '⚠️ No reply.' }])
+    } catch {
+      setMessages(prev => [...prev.slice(0, -1), { role: 'bot', content: '❌ Error contacting AI.' }])
     }
   }
 
-  const handleFAQClick = (faq) => {
-    setMessages((prev) => [...prev, { role: 'user', content: faq }, { role: 'bot', content: '⏳ Generating AI response...' }])
-    sendMessageToAI(faq)
+  /* ------------------------------ Handlers ------------------------------- */
+  const pushUser = (text) => {
+    setMessages(p => [...p, { role: 'user', content: text }, { role: 'bot', content: '⏳ Generating…' }])
+    sendToAI(text)
   }
+  const onSend = (e) => { e.preventDefault(); if (input.trim()) { pushUser(input); setInput('') } }
 
-  const handleSend = (e) => {
-    e.preventDefault()
-    if (!input.trim()) return
-    setMessages((prev) => [...prev, { role: 'user', content: input }, { role: 'bot', content: '⏳ Generating AI response...' }])
-    sendMessageToAI(input)
-    setInput('')
-  }
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages])
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
-
+  /* ---------------------------------------------------------------------- */
   return (
     <div className="flex flex-col max-w-5xl mx-auto h-[90vh] sm:h-[85vh] bg-white rounded-xl overflow-hidden shadow-2xl shadow-purple-300 border border-gray-200">
-      {/* Heading */}
+      {/* Header */}
       <div className="bg-[#7C3AED] text-white text-center py-3 text-lg sm:text-xl font-semibold shadow-md">
         💬 AI Chat Assistant
       </div>
@@ -57,29 +50,31 @@ const ChatPage = () => {
             🤖 <span className="font-medium">Ask something or tap a FAQ below to get started.</span>
           </div>
         ) : (
-          messages.map((msg, idx) => (
+          messages.map((m, i) => (
             <div
-              key={idx}
+              key={i}
               className={`max-w-lg px-4 py-3 rounded-xl shadow-md animate-fade-in ${
-                msg.role === 'user'
+                m.role === 'user'
                   ? 'ml-auto bg-[#DDD6FE] text-right text-[#4C1D95]'
                   : 'mr-auto bg-white text-left text-gray-700 border border-purple-200'
               }`}
             >
-              {msg.content}
+              {m.role === 'bot'
+                ? <div className="prose prose-sm sm:prose-base max-w-none" dangerouslySetInnerHTML={{ __html: m.content }} />
+                : m.content}
             </div>
           ))
         )}
-        <div ref={messagesEndRef} />
+        <div ref={endRef} />
       </div>
 
       {/* FAQ carousel */}
       <div className="relative overflow-hidden border-t bg-[#F3E8FF] py-3 shadow-inner">
         <div className="animate-scroll flex gap-4 w-max px-4">
-          {[...faqs, ...faqs].map((faq, index) => (
+          {[...faqs, ...faqs].map((faq, idx) => (
             <button
-              key={index}
-              onClick={() => handleFAQClick(faq)}
+              key={idx}
+              onClick={() => pushUser(faq)}
               className="bg-[#7C3AED] text-white text-xs sm:text-sm px-4 py-2 rounded-full hover:bg-[#6B21A8] transition whitespace-nowrap shadow"
             >
               {faq}
@@ -88,56 +83,35 @@ const ChatPage = () => {
         </div>
       </div>
 
-      {/* Input box */}
-      <form onSubmit={handleSend} className="flex items-center p-3 border-t bg-white">
+      {/* Input */}
+      <form onSubmit={onSend} className="flex items-center p-3 border-t bg-white">
         <input
-          type="text"
-          className="flex-1 p-2 sm:p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#7C3AED] shadow-sm text-sm sm:text-base"
-          placeholder="Type your question..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          className="flex-1 p-2 sm:p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#7C3AED] shadow-sm text-sm sm:text-base"
+          placeholder="Type your question…"
         />
-        <button
-          type="submit"
-          className="ml-3 bg-[#7C3AED] text-white px-4 py-2 rounded-lg hover:bg-[#6B21A8] transition shadow"
-        >
+        <button type="submit" className="ml-3 bg-[#7C3AED] text-white px-4 py-2 rounded-lg hover:bg-[#6B21A8] transition shadow">
           Send
         </button>
       </form>
 
+      {/* Animations */}
       <style jsx>{`
         @keyframes scroll {
-          0% {
-            transform: translateX(0%);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
+          0% { transform: translateX(0%) }
+          100% { transform: translateX(-50%) }
         }
-
-        .animate-scroll {
-          animation: scroll 20s linear infinite;
-        }
-
+        .animate-scroll { animation: scroll 20s linear infinite }
         @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity:0; transform:translateY(10px) }
+          to   { opacity:1; transform:translateY(0) }
         }
-
-        .animate-fade-in {
-          animation: fade-in 0.3s ease-in-out;
-        }
+        .animate-fade-in { animation: fade-in .3s ease-in-out }
       `}</style>
     </div>
   )
 }
 
 ChatPage.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>
-
 export default ChatPage
