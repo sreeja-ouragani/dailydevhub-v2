@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL + '/api'
+
 export default function CreatePost() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -37,7 +39,7 @@ export default function CreatePost() {
         formData.append('image', file)
       }
 
-      const res = await fetch('http://localhost:5000/api/posts', {
+      const res = await fetch(`${API_BASE_URL}/posts`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -63,8 +65,8 @@ export default function CreatePost() {
   }
 
   return (
-    <div className="max-w-xl w-full mx-auto bg-white rounded-2xl shadow-lg p-5 sm:p-8 mt-6 mb-12">
-      <h1 className="text-xl sm:text-3xl font-extrabold text-center text-[#7C3AED] mb-6">
+    <div className="max-w-xl w-full mx-auto bg-white rounded-2xl shadow-lg px-4 py-6 sm:p-8 mt-6 mb-12">
+      <h1 className="text-2xl sm:text-3xl font-extrabold text-center text-[#7C3AED] mb-6">
         📝 Create a New Post
       </h1>
 
@@ -89,7 +91,7 @@ export default function CreatePost() {
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            rows={5}
+            rows={4}
             className="rounded-lg border border-[#DDD6FE] px-4 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-[#7C3AED] text-[#1F2937] bg-white"
             placeholder="Write your post content here..."
           />

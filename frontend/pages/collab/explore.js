@@ -1,5 +1,9 @@
+// pages/collab/explore.js
+
 import DashboardLayout from '../../components/DashboardLayout'
 import { useState, useEffect } from 'react'
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export default function ExploreCollab() {
   const [user, setUser] = useState(null)
@@ -22,7 +26,7 @@ export default function ExploreCollab() {
     async function fetchTasks() {
       setLoading(true)
       try {
-        const res = await fetch('http://localhost:5000/api/posts', {
+        const res = await fetch(`${API_BASE_URL}/api/posts`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -57,7 +61,7 @@ export default function ExploreCollab() {
     if (!query.trim()) return
     setSearching(true)
     try {
-      const res = await fetch(`http://localhost:5000/api/users/search?q=${query}`, {
+      const res = await fetch(`${API_BASE_URL}/api/users/search?q=${query}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -76,8 +80,8 @@ export default function ExploreCollab() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-4xl mx-auto p-4 sm:p-8 bg-white rounded-xl shadow-xl transition-all duration-500">
-        <h1 className="text-3xl font-extrabold text-[#7C3AED] mb-6 text-center animate-pulse">
+      <div className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-xl transition-all duration-500">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#7C3AED] mb-6 text-center animate-pulse">
           🚀 Explore Collaboration Tasks
         </h1>
 
@@ -92,7 +96,7 @@ export default function ExploreCollab() {
           />
           <button
             onClick={handleSearch}
-            className="px-4 py-2 bg-[#7C3AED] text-white rounded-md hover:bg-[#6B21A8] transition font-semibold shadow"
+            className="px-4 py-2 w-full sm:w-auto bg-[#7C3AED] text-white rounded-md hover:bg-[#6B21A8] transition font-semibold shadow"
           >
             Search
           </button>
@@ -122,10 +126,10 @@ export default function ExploreCollab() {
             {tasks.map(({ id, title, description, owner }) => (
               <li
                 key={id}
-                className="border border-gray-200 rounded-lg p-5 hover:shadow-xl transition-shadow duration-300 bg-gray-50"
+                className="border border-gray-200 rounded-lg p-4 sm:p-5 hover:shadow-xl transition-shadow duration-300 bg-gray-50"
               >
-                <h2 className="text-xl font-semibold text-[#7C3AED]">{title}</h2>
-                <p className="text-gray-700 mt-1">{description}</p>
+                <h2 className="text-lg sm:text-xl font-semibold text-[#7C3AED]">{title}</h2>
+                <p className="text-gray-700 mt-1 text-sm sm:text-base">{description}</p>
                 <p className="mt-3 text-sm text-gray-500">
                   Posted by <strong>{owner}</strong>
                 </p>
@@ -149,7 +153,7 @@ function UserCard({ user }) {
 
     setSending(true)
     try {
-      const res = await fetch('http://localhost:5000/api/collabs/', {
+      const res = await fetch(`${API_BASE_URL}/api/collabs/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -178,13 +182,13 @@ function UserCard({ user }) {
 
   return (
     <li className="border p-4 rounded-xl bg-[#F5F3FF] shadow hover:shadow-md transition">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <p className="text-[#7C3AED] font-semibold">{user.username}</p>
           <p className="text-sm text-gray-500">{user.email}</p>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mt-2 sm:mt-0">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
           <select
             value={projectRole}
             onChange={(e) => setProjectRole(e.target.value)}

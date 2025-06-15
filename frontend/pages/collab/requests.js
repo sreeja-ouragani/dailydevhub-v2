@@ -9,6 +9,8 @@ export default function CollabRequests() {
   const [token, setToken] = useState('')
   const [currentUserId, setCurrentUserId] = useState(null)
 
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedToken = localStorage.getItem('token')
@@ -29,7 +31,7 @@ export default function CollabRequests() {
         else if (activeTab === 'sent') endpoint = '/sent'
         else if (activeTab === 'ongoing') endpoint = '/ongoing'
 
-        const res = await fetch(`http://localhost:5000/api/collabs${endpoint}`, {
+        const res = await fetch(`${API_BASE_URL}/api/collabs${endpoint}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
 
@@ -48,7 +50,7 @@ export default function CollabRequests() {
   const handleRespond = async (id, action) => {
     setError('')
     try {
-      const res = await fetch(`http://localhost:5000/api/collabs/${id}/respond`, {
+      const res = await fetch(`${API_BASE_URL}/api/collabs/${id}/respond`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -74,14 +76,16 @@ export default function CollabRequests() {
   return (
     <DashboardLayout>
       <div className="max-w-4xl mx-auto p-4 sm:p-8 bg-white rounded-xl shadow-md animate-fade-in">
-        <h1 className="text-3xl font-bold text-[#7C3AED] mb-6 text-center">🤝 Collaborations</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#7C3AED] mb-6 text-center">
+          🤝 Collaborations
+        </h1>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-6">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-6">
           {['received', 'sent', 'ongoing'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-full font-semibold transition transform duration-200 ${
+              className={`px-4 py-2 rounded-full font-semibold transition duration-200 text-sm sm:text-base ${
                 activeTab === tab
                   ? 'bg-[#7C3AED] text-white scale-105'
                   : 'bg-[#DDD6FE] text-[#1F2937] hover:scale-105'
@@ -115,28 +119,32 @@ export default function CollabRequests() {
               return (
                 <li
                   key={req._id}
-                  className="border border-gray-200 rounded-lg p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#F8F5FF] shadow-sm hover:shadow-lg transition-shadow"
+                  className="border border-gray-200 rounded-lg p-4 sm:p-5 flex flex-col gap-3 sm:flex-row justify-between items-start sm:items-center bg-[#F8F5FF] shadow-sm hover:shadow-lg transition-shadow"
                 >
-                  <div className="mb-3 sm:mb-0">
-                    <p className="font-semibold text-[#7C3AED]">{user?.username} is involved as:</p>
+                  <div>
+                    <p className="font-semibold text-[#7C3AED]">
+                      {user?.username} is involved as:
+                    </p>
                     <p className="text-gray-700">{req.projectRole}</p>
-                    {req.message && <p className="text-gray-600 italic mt-1">"{req.message}"</p>}
-                    <p className="mt-1 text-sm text-gray-500">
+                    {req.message && (
+                      <p className="text-gray-600 italic mt-1 text-sm">"{req.message}"</p>
+                    )}
+                    <p className="mt-1 text-xs text-gray-500">
                       Status: {req.status.charAt(0).toUpperCase() + req.status.slice(1)}
                     </p>
                   </div>
 
                   {activeTab === 'received' && req.status === 'pending' && (
-                    <div className="flex space-x-3">
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
                       <button
                         onClick={() => handleRespond(req._id, 'accepted')}
-                        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+                        className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition text-sm"
                       >
                         Accept
                       </button>
                       <button
                         onClick={() => handleRespond(req._id, 'rejected')}
-                        className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+                        className="px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition text-sm"
                       >
                         Reject
                       </button>
