@@ -3,13 +3,18 @@ from flask_cors import CORS
 import requests
 from datetime import datetime
 import traceback  # Optional but helpful for debugging
+import os  # ✅ added for environment variables
 
 app = Flask(__name__)
 CORS(app)
 
 user_chat_counts = {}
 DAILY_CHAT_LIMIT = 5
-NODE_API_URL = "https://dailydevhub-v2.onrender.com/api/ai/chat"
+NODE_API_URL = os.getenv("NODE_API_URL")  # ✅ loaded from env
+
+@app.route('/')
+def index():
+    return "Flask AI backend is running! ✨", 200  # ✅ simple health check route
 
 @app.route('/api/ai/chat', methods=['POST'])
 def chat_with_ai():
