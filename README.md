@@ -9,7 +9,7 @@
 **DailyDevHub** is a full-stack platform built to help developers:
 - Post daily project updates (text, images, code)
 - Maintain personal coding streaks
-- Send/receive collaboration requests (Frontend, Backend, AI)
+- Send/receive collaboration requests (Frontend, Backend, AI) 
 - Interact with **DevBot Chat** (an AI-powered chatbot) for:
   - Project ideas
   - Skill-based suggestions
