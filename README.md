@@ -82,14 +82,6 @@ B.Tech CSE (AI & ML) | Full Stack Developer | AI/ML Enthusiast
 
 ---
 
-## 📢 Feedback & Contributions
-
-This is an open learning project. Suggestions and contributions are always welcome!  
-Feel free to fork, explore, or reach out for collaboration.
-
----
-
-## 📸 Screenshots
 
 *(Optional: Add screenshots of dashboard, post page, collab requests, chatbot interaction)*
 
